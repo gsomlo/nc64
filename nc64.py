@@ -17,7 +17,6 @@
 # 2. SSL signing and handshake for SSH, HTTPS traffic spoofing
 # 3. Custom SSL certificate provision
 # 4. Logging instead of printing verbose messages on the screen
-# 5. Multiple IPv6 destination addresses as list for random selection
 __version__ = "0.72.1/Devon"
 
 import socket
@@ -57,7 +56,7 @@ def send64(data, mode):
     if version == 4:
         host = args.host4
     if version == 6:
-        host = args.host6
+        host = random.choice(args.host6)
 
     if not args.udp and not args.tcp:
         if args.verbose >= 2:
@@ -350,8 +349,9 @@ parser.add_argument(
 
 parser.add_argument(
     '-h6', '--host6',
+    nargs='+',
     type=str,
-    default="::1",
+    default=["::1"],
     help="Host IPv6 address. Default: ::1")
 
 parser.add_argument(
